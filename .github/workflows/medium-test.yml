@@ -9,9 +9,6 @@ on:
 jobs:
   run:
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-      issues: write
     if: github.event.sender.type != 'Bot'
     concurrency:
       group: test-${{ github.repository }}-${{ github.event.number || github.run_id }}
