@@ -6,14 +6,8 @@ on:
         required: false
         type: string
         default: 'gpt-4o-mini'
-    secrets:
-      MY_TOKEN:
-        required: false
 jobs:
   run:
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-      issues: write
     steps:
       - run: echo "inputs.model=${{ inputs.model }}"
