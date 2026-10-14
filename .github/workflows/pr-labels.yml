@@ -51,9 +51,10 @@ jobs:
     permissions:
       pull-requests: write
       issues: write        # label writes go through the issues API
-    # Skip bots (Dependabot, Renovate, …). The condition is guarded so the job
-    # also passes cleanly when triggered via workflow_dispatch (no PR context).
-    if: "!github.event.pull_request || github.event.pull_request.user.type != 'Bot'"
+    # Skip bots (Dependabot, Renovate, …). Uses github.event.sender.type which is
+    # present on all event types, unlike github.event.pull_request.user.type which
+    # is only available on pull_request/pull_request_target events.
+    if: github.event.sender.type != 'Bot'
     # Prevent races when opened + synchronize fire together.
     # Falls back to run-id when there is no PR number (e.g. workflow_dispatch tests).
     concurrency:
