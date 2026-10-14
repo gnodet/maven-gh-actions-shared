@@ -6,8 +6,16 @@ on:
         required: false
         type: string
         default: 'gpt-4o-mini'
+permissions: {}
 jobs:
   run:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      issues: write
+    if: "!github.event.pull_request || github.event.pull_request.user.type != 'Bot'"
+    concurrency:
+      group: test-${{ github.repository }}-${{ github.event.pull_request.number || github.run_id }}
+      cancel-in-progress: false
     steps:
-      - run: echo "inputs.model=${{ inputs.model }}"
+      - run: echo "model=${{ inputs.model }}"
