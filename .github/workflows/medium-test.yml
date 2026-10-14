@@ -9,7 +9,6 @@ on:
     secrets:
       MY_TOKEN:
         required: false
-permissions: {}
 jobs:
   run:
     runs-on: ubuntu-latest
