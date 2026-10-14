@@ -6,12 +6,24 @@ on:
         required: false
         type: string
         default: 'gpt-4o-mini'
+permissions: {}
 jobs:
   run:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      issues: write
     if: github.event.sender.type != 'Bot'
     concurrency:
       group: test-${{ github.repository }}-${{ github.event.number || github.run_id }}
       cancel-in-progress: false
     steps:
-      - run: echo "model=${{ inputs.model }}"
+      - name: Test
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          MY_TOKEN: ${{ secrets.LLMAO_TOKEN }}
+          MY_MODEL: ${{ inputs.model }}
+        with:
+          script: |
+            core.info('model: ' + process.env.MY_MODEL);
+            core.info('has token: ' + (!!process.env.MY_TOKEN));
