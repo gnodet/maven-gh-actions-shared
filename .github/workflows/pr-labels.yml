@@ -48,9 +48,10 @@ jobs:
   assign-labels:
     name: Assign labels
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-      issues: write        # label writes go through the issues API
+    # NOTE: The calling workflow must grant pull-requests: write and issues: write
+    # permissions. Declaring permissions here would prevent cross-account reusable
+    # workflow calls (GitHub restriction: external reusable workflows cannot escalate
+    # permissions beyond what the caller grants).
     # Skip bots (Dependabot, Renovate, …). Uses github.event.sender.type which is
     # present on all event types, unlike github.event.pull_request.user.type which
     # is only available on pull_request/pull_request_target events.
