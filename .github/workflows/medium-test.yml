@@ -1,0 +1,20 @@
+name: Medium Test
+on:
+  workflow_call:
+    inputs:
+      model:
+        required: false
+        type: string
+        default: 'gpt-4o-mini'
+    secrets:
+      MY_TOKEN:
+        required: false
+permissions: {}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      issues: write
+    steps:
+      - run: echo "inputs.model=${{ inputs.model }}"
