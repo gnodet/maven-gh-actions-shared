@@ -6,7 +6,6 @@ on:
         required: false
         type: string
         default: 'gpt-4o-mini'
-permissions: {}
 jobs:
   run:
     runs-on: ubuntu-latest
