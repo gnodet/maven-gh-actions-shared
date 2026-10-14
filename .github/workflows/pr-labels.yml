@@ -36,13 +36,10 @@ on:
         type: string
         default: 'gpt-4o-mini'
 
-    secrets:
-      LLMAO_TOKEN:
-        description: |
-          Personal access token for llm.apache.org (https://llm.apache.org).
-          Create one at llm.apache.org after signing in with your ASF account.
-          If not provided, only the deterministic version label is applied.
-        required: false
+# NOTE: LLMAO_TOKEN is intentionally NOT declared under workflow_call secrets.
+# Declaring it there breaks cross-account reusable workflow calls (GitHub limitation).
+# Instead, callers pass it via `secrets: inherit` and it is read from the job env.
+# If LLMAO_TOKEN is not set in the calling repo, the LLM pass is silently skipped.
 
 # All permissions are declared per-job.
 permissions: {}
