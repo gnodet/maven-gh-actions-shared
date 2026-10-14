@@ -57,7 +57,7 @@ jobs:
     # Prevent races when opened + synchronize fire together.
     # Falls back to run-id when there is no PR number (e.g. workflow_dispatch tests).
     concurrency:
-      group: pr-labels-${{ github.repository }}-${{ github.event.pull_request.number || github.run_id }}
+      group: pr-labels-${{ github.repository }}-${{ github.event.number || github.run_id }}
       cancel-in-progress: false
     steps:
       - name: Assign labels
