@@ -51,11 +51,13 @@ jobs:
     permissions:
       pull-requests: write
       issues: write        # label writes go through the issues API
-    # Skip bots (Dependabot, Renovate, …)
-    if: github.event.pull_request.user.type != 'Bot'
-    # Prevent races when opened + synchronize fire together
+    # Skip bots (Dependabot, Renovate, …). The condition is guarded so the job
+    # also passes cleanly when triggered via workflow_dispatch (no PR context).
+    if: "!github.event.pull_request || github.event.pull_request.user.type != 'Bot'"
+    # Prevent races when opened + synchronize fire together.
+    # Falls back to run-id when there is no PR number (e.g. workflow_dispatch tests).
     concurrency:
-      group: pr-labels-${{ github.repository }}-${{ github.event.pull_request.number }}
+      group: pr-labels-${{ github.repository }}-${{ github.event.pull_request.number || github.run_id }}
       cancel-in-progress: false
     steps:
       - name: Assign labels
