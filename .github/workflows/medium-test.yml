@@ -9,6 +9,9 @@ on:
 jobs:
   run:
     runs-on: ubuntu-latest
-    if: "!github.event.pull_request || github.event.pull_request.user.type != 'Bot'"
+    if: github.event.sender.type != 'Bot'
+    concurrency:
+      group: test-${{ github.repository }}-${{ github.event.number || github.run_id }}
+      cancel-in-progress: false
     steps:
       - run: echo "model=${{ inputs.model }}"
