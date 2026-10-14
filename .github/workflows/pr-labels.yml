@@ -35,6 +35,13 @@ on:
         required: false
         type: string
         default: 'gpt-4o-mini'
+      runs-on:
+        description: |
+          Runner label to use for the job. Defaults to ubuntu-latest.
+          Apache repos should use ubuntu-slim (ASF self-hosted runner).
+        required: false
+        type: string
+        default: 'ubuntu-latest'
     secrets:
       LLMAO_TOKEN:
         description: |
@@ -49,7 +56,7 @@ permissions: {}
 jobs:
   assign-labels:
     name: Assign labels
-    runs-on: ubuntu-slim
+    runs-on: ${{ inputs.runs-on }}
     permissions:
       pull-requests: write
       issues: write        # label writes go through the issues API
